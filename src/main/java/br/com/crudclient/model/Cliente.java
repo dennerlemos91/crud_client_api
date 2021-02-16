@@ -1,5 +1,6 @@
 package br.com.crudclient.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class Cliente implements Serializable {
 
     private Endereco endereco;
 
+    @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Telefone> telefones = new ArrayList<>();
 

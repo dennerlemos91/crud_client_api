@@ -1,6 +1,7 @@
 package br.com.crudclient.model;
 
 import br.com.crudclient.model.enums.TipoTelefone;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class Telefone implements Serializable {
     private String numero;
 
     @ManyToOne
+    @JsonBackReference
     private Cliente cliente;
 
 }
