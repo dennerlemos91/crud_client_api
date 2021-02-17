@@ -19,11 +19,7 @@ public class ClienteMapper implements AbstractMapper<Cliente, ClienteDTO> {
                 .emails(entidade.getEmails())
                 .telefones(entidade.getTelefones().stream().map(telefone -> TelefoneDTO.builder()
                         .numero(telefone.getNumero()).tipo(telefone.getTipo()).build()).collect(Collectors.toList()))
-                .bairro(entidade.getEndereco().getBairro())
-                .cep(entidade.getEndereco().getCep())
-                .cidade(entidade.getEndereco().getCidade())
-                .uf(entidade.getEndereco().getUf())
-                .logradouro(entidade.getEndereco().getLogradouro())
+                .endereco(entidade.getEndereco())
                 .build();
     }
 }

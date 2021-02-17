@@ -1,7 +1,6 @@
 package br.com.crudclient.service;
 
 import br.com.crudclient.model.Cliente;
-import br.com.crudclient.model.Endereco;
 import br.com.crudclient.model.Telefone;
 import br.com.crudclient.repository.ClienteRepository;
 import br.com.crudclient.service.dto.ClienteDTO;
@@ -42,13 +41,7 @@ public class ClienteService {
                 .cpf(dto.getCpf())
                 .emails(dto.getEmails())
                 .endereco(
-                    Endereco.builder()
-                            .logradouro(dto.getLogradouro())
-                            .bairro(dto.getBairro())
-                            .uf(dto.getUf())
-                            .cep(dto.getCep())
-                            .cidade(dto.getCidade())
-                            .build()
+                    dto.getEndereco()
                 )
                 .build();
         obj.setTelefones(
@@ -79,17 +72,7 @@ public class ClienteService {
                         .collect(Collectors.toList()
         ));
         cliente.setEmails(dto.getEmails());
-
-        final var endereco = Endereco.builder()
-                .cidade(dto.getCidade())
-                .cep(dto.getCep())
-                .uf(dto.getUf())
-                .bairro(dto.getBairro())
-                .logradouro(dto.getLogradouro())
-                .build();
-
-
-        cliente.setEndereco(endereco);
+        cliente.setEndereco(dto.getEndereco());
         clienteRepository.saveAndFlush(cliente);
     }
 

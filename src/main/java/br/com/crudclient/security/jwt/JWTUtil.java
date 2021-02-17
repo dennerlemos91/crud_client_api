@@ -5,8 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class JWTUtil {
@@ -14,9 +13,14 @@ public class JWTUtil {
     static final long EXPIRATION_TIME = 86400000;
     static final String SECRET = "JWtlincegpsbrasil";
 
-    public String generateToken(String username) {
+    public String generateToken(String username, Set<String> permissoes) {
+        Map<String, Object> additionalInfo = new HashMap<>();
+        additionalInfo.put("username", username);
+        additionalInfo.put("permissoes", permissoes);
+
         return Jwts.builder()
                 .setSubject(username)
+                .setClaims(additionalInfo)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
@@ -25,7 +29,7 @@ public class JWTUtil {
     public boolean tokenValido(String token) {
         Claims claims = getClaim(token);
         if(Objects.nonNull(claims)) {
-            final var username = claims.getSubject();
+            final var username = claims.get("username");
             final var expritaionDate = claims.getExpiration();
             Date now = new Date(System.currentTimeMillis());
             if(Objects.nonNull(username) && Objects.nonNull(expritaionDate) && now.before(expritaionDate)) {
@@ -50,7 +54,7 @@ public class JWTUtil {
     public String getUsername(String token) {
         Claims claims = getClaim(token);
         if(Objects.nonNull(claims)) {
-            return claims.getSubject();
+            return claims.get("username").toString();
         }
         return null;
     }

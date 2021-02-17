@@ -18,4 +18,5 @@ public class Endereco {
     private String uf;
     private String bairro;
     private String cep;
+    private String complemento;
 }

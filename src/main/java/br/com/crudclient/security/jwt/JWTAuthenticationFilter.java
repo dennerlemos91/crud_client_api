@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     static final String TOKEN_PREFIX = "Bearer ";
@@ -59,7 +62,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
         final var username = ((UserDetailsCustom) authResult.getPrincipal()).getUsername();
-        final var token = jwtUtil.generateToken(username);
+        final var permissoes = ((UserDetailsCustom) authResult.getPrincipal()).getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+        final var token = jwtUtil.generateToken(username, permissoes);
         response.addHeader(HEADER_STRING, TOKEN_PREFIX.concat(token));
         response.addHeader("access-control-expose-headers", HEADER_STRING);
 

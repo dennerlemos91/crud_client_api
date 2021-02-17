@@ -1,5 +1,6 @@
 package br.com.crudclient.service.dto;
 
+import br.com.crudclient.model.Endereco;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,10 +21,6 @@ public class ClienteDTO {
     private String cpf;
     private List<TelefoneDTO> telefones;
     private Set<String> emails;
+    private Endereco endereco;
 
-    private String logradouro;
-    private String cidade;
-    private String uf;
-    private String bairro;
-    private String cep;
 }
